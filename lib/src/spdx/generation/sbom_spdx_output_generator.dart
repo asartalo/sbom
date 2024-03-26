@@ -12,10 +12,14 @@ class SbomSpdxOutputGenerator extends SbomIOutputGenerator {
   /// Construction
   SbomSpdxOutputGenerator(this.configuration) {
     fileSupport = SbomFileSupport(configuration.packageTopLevel);
+    licensePath = configuration.licensePath;
   }
 
   /// SBOM configuration.
   final SbomConfiguration configuration;
+
+  /// License path
+  String licensePath = '';
 
   /// File support
   late SbomFileSupport fileSupport;
@@ -118,7 +122,7 @@ class SbomSpdxOutputGenerator extends SbomIOutputGenerator {
     // Concluded license
     final license = fileSupport.licenceFileContents();
     tags.tagByName(SbomSpdxTagNames.packageLicenseConcluded).value =
-        SbomSpdxLicense().licenseId(license);
+        SbomSpdxLicense(licensePath: licensePath).licenseId(license);
     // Summary description
     if (!tags.tagByName(SbomSpdxTagNames.packageSummary).isSet()) {
       // Get the package description from the pubspec if present

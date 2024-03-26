@@ -5,14 +5,25 @@
  * Copyright :  S.Hamblett
  */
 
+import 'dart:isolate';
 import 'package:sbom/sbom.dart';
 
 /// SBOM
 int main(List<String> args) {
+  final licenseUri = Isolate.resolvePackageUriSync(
+    Uri.parse('package:sbom/src/spdx/licences'),
+  );
+  if (licenseUri == null) {
+    throw Exception('Unable to resolve package path. Script will not work.');
+  }
+
   // Announce
   print('SBOM generator for Dart packages');
   // Construct the SBOM configuration
-  final configuration = SbomConfiguration(args);
+  final configuration = SbomConfiguration(
+    args,
+    licensePath: licenseUri.path,
+  );
 
   // Check validity, if not valid then return.
   // The user may have just asked for usage or some other

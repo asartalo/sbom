@@ -13,12 +13,15 @@ enum SbomType { none, spdx }
 /// The main sbom configuration class
 class SbomConfiguration {
   /// Construction
-  SbomConfiguration(List<String> args) {
+  SbomConfiguration(List<String> args, {this.licensePath = ''}) {
     _buildConfiguration(args);
   }
 
   /// Configuration valid
   bool valid = false;
+
+  /// License path
+  String licensePath = '';
 
   /// Output type.
   SbomType outputType = SbomType.none;

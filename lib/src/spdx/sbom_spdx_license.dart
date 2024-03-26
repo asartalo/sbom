@@ -56,9 +56,12 @@ class SbomSpdxLicenseDetails {
 
 /// Main license class
 class SbomSpdxLicense {
-  SbomSpdxLicense() {
+  SbomSpdxLicense({this.licensePath}) {
     _licenseList();
   }
+
+  /// License path
+  String? licensePath = '';
 
   /// Current version of the license list
   String licenseListVersion = SbomSpdxConstants.licenseListVersion;
@@ -71,8 +74,11 @@ class SbomSpdxLicense {
   void _licenseList() {
     // Get the path to the license file directory
     // If we can't find the installed package use top level as a default
-    var licenseDirectoryPath =
+    var licenseDirectoryPath = licensePath ??
         path.join(path.current, SbomSpdxConstants.licenceDirectory);
+
+    print('1: $licensePath');
+    print('2: ${SbomSpdxConstants.licenceDirectory}');
     final pubCache = PubCache();
     final sbomPackageRef = pubCache.getLatestVersion(SbomConstants.package);
     if (sbomPackageRef != null) {
